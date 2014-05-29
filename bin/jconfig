@@ -1,21 +1,14 @@
 # configuration for build shell scripts - edit to configure
 
 # bits 32 or 64
-bits=32
+bits=64
 
-# readline 0 or 1 to enable jconsole line recall
-readline=0
-LIBREADLINE=""
-
-# readline should be enabled if possible
-
-# remove # from next 2 lines to enable readline
-# readline=1
-# LIBREADLINE=" -lreadline "
+readline=1
+LIBREADLINE=" -lreadline "
 
 # if link fails install readline or try one of next lines
 # LIBREADLINE=" -ledit -lncurses "
-# LIBREADLINE=" -ledit64 -lnccurses " 
+# LIBREADLINE=" -ledit64 -lnccurses "
 
 # be careful with changes after this line
 
