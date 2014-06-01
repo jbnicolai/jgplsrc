@@ -4,7 +4,7 @@
 bits=64
 
 readline=1
-LIBREADLINE=" -lreadline "
+LIBREADLINE=" -lreadline -ltermcap -D_GNU_SOURCE"
 
 # if link fails install readline or try one of next lines
 # LIBREADLINE=" -ledit -lncurses "

@@ -4,7 +4,7 @@
 /* #define READLINE for Unix readline support */
 #ifdef _WIN32
 #include <windows.h>
-#include <io.h> 
+#include <io.h>
 #else
 #define _isatty isatty
 #define _fileno fileno
@@ -22,37 +22,17 @@ static char input[30000];
 #ifdef READLINE
 /* readlin.h */
 int   add_history(const char *);
-int   read_history(const char *);
 int   write_history(const char *);
 char* readline(const char *);
 
-int hist=1;
-char histfile[256];
-
-void rlexit(int c){	if(!hist&&histfile[0]) write_history(histfile);}
-
 char* Jinput_rl(char* prompt)
 {
-	static char* line=0;
-if(hist)
-	{
-		char* s;
-		hist=0;
-		histfile[0]=0;
-		s=getenv("HOME");
-		if(s)
-		{
-			strcpy(histfile,s);
-			strcat(histfile,"/.jhistory");
-			using_history();
-			read_history(histfile);
-		}
-	}
-	if(line) free(line); /* free last input */
-	line = readline(prompt);
-	if(!line) return "2!:55''"; /* ^d eof */
-	if(*line) add_history(line); 
-	return line;
+  static char* line=0;
+  if(line) free(line); /* free last input */
+  line = readline(prompt);
+  if(!line) return "2!:55''"; /* ^d eof */
+  if(*line) add_history(line);
+  return line;
 }
 #endif
 
@@ -80,7 +60,7 @@ char* _stdcall Jinput(J jt,char* prompt){
 #ifdef READLINE
     if(isatty(0)){
 		return Jinput_rl(prompt);
-    } else 
+    } else
 #endif
 	return Jinput_stdio(prompt);
 }
@@ -90,9 +70,6 @@ void _stdcall Joutput(J jt,int type, char* s)
 {
  if(MTYOEXIT==type)
  {
-#ifdef READLINE
-  rlexit((int)(I)s);
-#endif
   exit((int)(I)s);
  }
  fputs(s,stdout);
@@ -108,7 +85,7 @@ void addargv(int argc, char* argv[], C* d)
  {
   if(sizeof(input)<(100+strlen(d)+2*strlen(argv[i]))) exit(100);
   if(1==argc){*p++=',';*p++='<';}
-  if(i)*p++=';';	
+  if(i)*p++=';';
   *p++='\'';
   q=argv[i];
   while(*q)
@@ -117,7 +94,7 @@ void addargv(int argc, char* argv[], C* d)
    if('\''==*(p-1))*p++='\'';
   }
   *p++='\'';
- } 
+ }
  *p=0;
 }
 
@@ -132,7 +109,7 @@ int main(int argc, char* argv[])
  if(!jt){char m[1000]; jefail(m), fputs(m,stdout); exit(1);}
  adadbreak=(char**)jt; // first address in jt is address of breakdata
  signal(SIGINT,sigint);
- 
+
 #ifdef READLINE
  char* rl_readline_name="jconsole"; /* argv[0] varies too much*/
 #endif
